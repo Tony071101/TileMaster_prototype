@@ -68,14 +68,14 @@ public class TouchManager : MonoBehaviour
 
             tile.transform.SetParent(arrayHolder.transform);
 
-            // Calculate the new position for the tile based on index and desired spacing
-            int childIndex = arrayHolder.transform.childCount - 1;
-            Debug.LogError(childIndex);
-            float spacing = 25.0f; // Adjust this value as needed
-            Vector3 newPosition = Vector3.right * spacing * childIndex;
-
-            // Set the new position for the tile
-            tile.transform.localPosition = newPosition;
+            // Reset the positions of all tiles in arrayHolder
+            float spacing = 30.0f; // Adjust this value as needed
+            for (int i = 0; i < arrayHolder.transform.childCount; i++)
+            {
+                Transform child = arrayHolder.transform.GetChild(i);
+                Vector3 newPosition = Vector3.right * spacing * i;
+                child.localPosition = newPosition;
+            }
         }
         else
         {
@@ -83,7 +83,7 @@ public class TouchManager : MonoBehaviour
         }
    }
 
-   private void MoveTileToTileHolder(GameObject tile)
+   public void MoveTileToTileHolder(GameObject tile)
     {
         // Move the tile to TileHolder
         tile.transform.SetParent(tileHolder.transform);
