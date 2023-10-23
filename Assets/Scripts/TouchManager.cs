@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,19 @@ public class TouchManager : MonoBehaviour
     private Vector3[] arrayHolderTilePositions = new Vector3[3];
     private GameObject tileHolder;
     private GameObject arrayHolder;
+    private UIManager uIManager;
    private void Awake() {
+        uIManager = FindObjectOfType<UIManager>();
         playerInput = GetComponent<PlayerInput>();
         touchInputAction = playerInput.actions["TouchInput"];
         tileHolder = GameObject.Find("TileHolder");
         arrayHolder = GameObject.Find("ArrayHolder");
    }
+
+    private void Start() {
+        uIManager.disableTouch += DisableTouch;
+        uIManager.enableTouch += EnableTouch;
+    }
 
    private void OnEnable() {
         touchInputAction.performed += TouchInput;
@@ -31,7 +39,6 @@ public class TouchManager : MonoBehaviour
 
    private void TouchInput(InputAction.CallbackContext context){
         Vector2 touchPosition = context.ReadValue<Vector2>();
-
         // Create a ray from the touch/click position
         Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
@@ -42,20 +49,16 @@ public class TouchManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             hitObject = hit.collider.gameObject;
-            if (Physics.Raycast(ray, out hit))
+            
+            if (arrayHolder != null && hitObject.transform.IsChildOf(arrayHolder.transform))
             {
-                hitObject = hit.collider.gameObject;
-                
-                if (arrayHolder != null && hitObject.transform.IsChildOf(arrayHolder.transform))
-                {
-                    // Clicked a tile in ArrayHolder, move it back to TileHolder
-                    MoveTileToTileHolder(hitObject);
-                }
-                else if (tileHolder != null && hitObject.CompareTag("Tiles"))
-                {
-                    // Clicked a tile in TileHolder, move it to ArrayHolder
-                    MoveTileToArrayHolder(hitObject);
-                }
+                // Clicked a tile in ArrayHolder, move it back to TileHolder
+                MoveTileToTileHolder(hitObject);
+            }
+            else if (tileHolder != null && hitObject.CompareTag("Tiles"))
+            {
+                // Clicked a tile in TileHolder, move it to ArrayHolder
+                MoveTileToArrayHolder(hitObject);
             }
         }
    }
@@ -93,5 +96,13 @@ public class TouchManager : MonoBehaviour
         {
             tile.transform.localPosition = originalPositions[tile];
         }
+    }
+
+    private void EnableTouch(object sender, EventArgs e){
+        this.gameObject.SetActive(true);
+    }
+
+    private void DisableTouch(object sender, EventArgs e){
+        this.gameObject.SetActive(false);
     }
 }

@@ -1,21 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public class GameData {
+        public int levelData;
+    }
+
+    public event EventHandler nextLevel;
+    public event EventHandler countinueBtnShow;
     public static GameManager _instance { get; private set; }
     private GameObject arrayHolder;
     private GameObject tileHolder;
     private TouchManager touchManager;
-    private int level = 1;
-    private bool canGoNextLvl;
-
+    [SerializeField] private int level;
+    private byte[] encryptionKey = new byte[32]; // Replace with a strong, secret key
+    private byte[] initializationVector = new byte[16]; // Replace with a secure IV
      private void Awake() {
         if (_instance != null)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         } else{
             _instance = this;
         }
@@ -28,62 +38,52 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-        canGoNextLvl = false;
-        arrayHolder = GameObject.Find("ArrayHolder");
         touchManager = FindObjectOfType<TouchManager>();
         tileHolder = GameObject.Find("TileHolder");
+        arrayHolder = GameObject.Find("ArrayHolder");
     } 
 
 
     private void Update() {
         CheckForTilesMatched();
-
         CheckTile();
-        
-        if(canGoNextLvl == true){
-            Invoke("GoNextLevelEvent", 1.5f);
-        }
+        CheckSaveData();
     }
 
     private void CheckForTilesMatched() {
-        // Get all the children of the ArrayHolder.
+        if (arrayHolder == null){
+            return;
+        }
         Transform[] children = arrayHolder.GetComponentsInChildren<Transform>();
-        // Create a dictionary to store the frontTiles and their corresponding Tile GameObjects.
         Dictionary<Sprite, List<GameObject>> tileSpriteMap = new Dictionary<Sprite, List<GameObject>>();
 
         foreach (Transform child in children)
         {
             if (child.CompareTag("Tiles"))
             {
-                Tiles tilesScript = child.GetComponentInChildren<Tiles>();
-                if (tilesScript != null)
+                SpriteRenderer spriteRenderer = child.GetComponentInChildren<SpriteRenderer>();
+                if (spriteRenderer != null)
                 {
-                    Sprite tileSprite = tilesScript.GetFrontTile();
+                    Sprite tileSprite = spriteRenderer.sprite;
 
-                    // Check if the frontTile is already in the dictionary.
                     if (tileSpriteMap.ContainsKey(tileSprite))
                     {
-                        // Add the current tile to the list of matching tiles.
                         tileSpriteMap[tileSprite].Add(child.gameObject);
                     }
                     else
                     {
-                        // Create a new list with the current tile and add it to the dictionary.
                         tileSpriteMap.Add(tileSprite, new List<GameObject> { child.gameObject });
                     }
                 }
             }
         }
 
-        // Iterate through the dictionary to destroy matching tiles.
         foreach (var pair in tileSpriteMap)
         {
             if (pair.Value.Count >= 3)
             {
-                // Matching tiles found, destroy them.
                 foreach (GameObject matchingTile in pair.Value)
                 {
-                    // Destroy the matching tile GameObject.
                     Destroy(matchingTile, 0.5f);
                 }
             }
@@ -91,13 +91,18 @@ public class GameManager : MonoBehaviour
     }
 
     private void CheckTile(){
-        if(tileHolder.transform.childCount == 0){
-            canGoNextLvl = true;
+        if (tileHolder == null){
+            return;
+        }
+        else if(tileHolder.transform.childCount == 0){
+            float delay = 0.5f; 
+            Invoke("InvokeNextLevel", delay);
         }
     }
 
-    private void GoNextLevelEvent(){
-        Debug.LogError("Next Level");
+    private void InvokeNextLevel()
+    {
+        nextLevel?.Invoke(this, EventArgs.Empty);
     }
 
     public void NewGame(){
@@ -106,19 +111,89 @@ public class GameManager : MonoBehaviour
 
     private void LoadLevel(int level){
         this.level = level;
-        SceneManager.LoadScene($"Stage-{level}");
+        SceneManager.LoadScene($"Level-{level}");
     }
 
     public void NextLevel(){
-        LoadLevel(level + 1);
-    }
-
-     private void GameOver(){
-        NewGame();
+        SaveGameData();
+        LoadLevel(level);
     }
 
     public void Quit(){
         Application.Quit();
     }
 
+    public void SaveGameData()
+    {
+        GameData gameData = new GameData
+        {
+            levelData = level
+        };
+        string json = JsonUtility.ToJson(gameData);
+        string encryptedData = Encrypt(json);
+        File.WriteAllText("saveData.txt", encryptedData);
+    }
+
+    public void LoadGameData()
+    {
+        if (File.Exists("saveData.txt"))
+        {
+            string encryptedData = File.ReadAllText("saveData.txt");
+            string json = Decrypt(encryptedData);
+            GameData gameData = JsonUtility.FromJson<GameData>(json);
+            level = gameData.levelData;
+            LoadLevel(level);
+        }
+    }
+
+    private void CheckSaveData(){
+        if(File.Exists("saveData.txt")){
+            countinueBtnShow?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private string Encrypt(string data)
+    {
+        using (Aes aesAlg = Aes.Create())
+        {
+            aesAlg.Key = encryptionKey;
+            aesAlg.IV = initializationVector;
+
+            ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+            using (MemoryStream msEncrypt = new MemoryStream())
+            {
+                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                {
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                    {
+                        swEncrypt.Write(data);
+                    }
+                }
+                return Convert.ToBase64String(msEncrypt.ToArray());
+            }
+        }
+    }
+
+    private string Decrypt(string encryptedData)
+    {
+        using (Aes aesAlg = Aes.Create())
+        {
+            aesAlg.Key = encryptionKey;
+            aesAlg.IV = initializationVector;
+
+            ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+            using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(encryptedData)))
+            {
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                {
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                    {
+                        return srDecrypt.ReadToEnd();
+                    }
+                }
+            }
+        }
+    }
 }

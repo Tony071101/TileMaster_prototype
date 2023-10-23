@@ -1,0 +1,20 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:d0f5115f54db771586c9493a3622af65:2231fb91c197f09b13265701ebcba359:462da17206bf6aeb9dc17b6a0ecc8ebf$
+#
+:format=40300
+:texture=Textures.png
+:size=2048x4096
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+png-transparent-pause-icon-brand-pattern-pause-button-angle-rectangle-black-thumbnail;1;3735;360;360; 0.5;0.5; 0;0;0;0
+texture_1;363;3870;225;225; 0.5;0.5; 0;0;0;0
+texture_2;590;3895;198;200; 0.5;0.5; 0;0;0;0
+texture_3;790;3150;1024;945; 0.5;0.5; 0;0;0;0
+texture_4;1;1584;1600;1564; 0.5;0.5; 0;0;0;0
