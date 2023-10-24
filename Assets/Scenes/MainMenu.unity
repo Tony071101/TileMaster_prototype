@@ -143,10 +143,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 115456198783457070, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 430462799635099203, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 150
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 525530054033169625, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
@@ -203,15 +208,40 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2132925813588815893, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299926376094970046, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 2614215775619608870, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 2837087911625911162, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 4311789898887101046, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671130842305702349, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4843152575895354800, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 5643827909825034175, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
@@ -221,12 +251,12 @@ PrefabInstance:
     - target: {fileID: 5892134827778880967, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: m_ReferenceResolution.x
-      value: 1440
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 5892134827778880967, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: m_ReferenceResolution.y
-      value: 3880
+      value: 2340
       objectReference: {fileID: 0}
     - target: {fileID: 5918319398784336446, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
@@ -248,15 +278,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7485911836185334156, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+    - target: {fileID: 6782942714148824358, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 57.800293
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223423027982613388, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7485911836185334156, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -2.2001953
+      propertyPath: m_LocalPosition.z
+      value: 178
       objectReference: {fileID: 0}
     - target: {fileID: 7560458650337701688, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
@@ -361,7 +396,7 @@ PrefabInstance:
     - target: {fileID: 7837809228538282645, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 150
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
