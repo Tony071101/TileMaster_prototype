@@ -1447,6 +1447,18 @@ PrefabInstance:
       addedObject: {fileID: 1872883616}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d48f0b17f8fdde34ca20d16e868b3d2b, type: 3}
+--- !u!114 &1607526067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2190080937439722628, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+    type: 3}
+  m_PrefabInstance: {fileID: 5967724251305968619}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c640a1cfa3d0036418d1e34f5d2d09ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1618820458 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8127004961196024672, guid: 27931651fc36ec143bb888630eb90baa,
@@ -2462,6 +2474,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 5807940327750211734}
+    - target: {fileID: 1716732097945162721, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_VertexColorAlwaysGammaSpace
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2190080937439722628, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
       propertyPath: lvlTxt
@@ -2472,15 +2489,35 @@ PrefabInstance:
       propertyPath: countinueBtn
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4671130842305702349, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+    - target: {fileID: 5195480036187903643, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
-      propertyPath: m_text
-      value: LEVEL 1
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4671130842305702349, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+    - target: {fileID: 5195480036187903643, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}
-      propertyPath: m_fontSize
-      value: 89.5
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1607526067}
+    - target: {fileID: 5195480036187903643, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToNextLvLBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195480036187903643, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195480036187903643, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5918319398784336446, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6666850528578708351, guid: ed891dde9e9cd9e4b971bf2f7349fb69,
         type: 3}

@@ -16,6 +16,7 @@ public class TouchManager : MonoBehaviour
     private GameObject tileHolder;
     private GameObject arrayHolder;
     private UIManager uIManager;
+    private AudioSource touchSound;
    private void Awake() {
         uIManager = FindObjectOfType<UIManager>();
         playerInput = GetComponent<PlayerInput>();
@@ -27,6 +28,7 @@ public class TouchManager : MonoBehaviour
     private void Start() {
         uIManager.disableTouch += DisableTouch;
         uIManager.enableTouch += EnableTouch;
+        touchSound = GetComponent<AudioSource>();
     }
 
    private void OnEnable() {
@@ -49,7 +51,9 @@ public class TouchManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             hitObject = hit.collider.gameObject;
-            
+            if(hitObject.CompareTag("Tiles")){
+                touchSound.Play();
+            }
             if (arrayHolder != null && hitObject.transform.IsChildOf(arrayHolder.transform))
             {
                 // Clicked a tile in ArrayHolder, move it back to TileHolder

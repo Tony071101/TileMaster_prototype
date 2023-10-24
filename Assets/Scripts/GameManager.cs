@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private GameObject arrayHolder;
     private GameObject tileHolder;
     private TouchManager touchManager;
+    private AudioSource destroyTileSound;
     [SerializeField] private int level;
     private byte[] encryptionKey = new byte[32]; // Replace with a strong, secret key
     private byte[] initializationVector = new byte[16]; // Replace with a secure IV
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
         touchManager = FindObjectOfType<TouchManager>();
         tileHolder = GameObject.Find("TileHolder");
         arrayHolder = GameObject.Find("ArrayHolder");
+        destroyTileSound = GetComponent<AudioSource>();
     } 
 
 
@@ -85,6 +87,7 @@ public class GameManager : MonoBehaviour
                 foreach (GameObject matchingTile in pair.Value)
                 {
                     Destroy(matchingTile, 0.5f);
+                    destroyTileSound.PlayDelayed(0.1f);
                 }
             }
         }
@@ -130,15 +133,19 @@ public class GameManager : MonoBehaviour
             levelData = level
         };
         string json = JsonUtility.ToJson(gameData);
+
+        string filePath = Path.Combine(Application.persistentDataPath, "saveData.txt");
         string encryptedData = Encrypt(json);
-        File.WriteAllText("saveData.txt", encryptedData);
+        File.WriteAllText(filePath, encryptedData);
     }
 
     public void LoadGameData()
     {
-        if (File.Exists("saveData.txt"))
+        string filePath = Path.Combine(Application.persistentDataPath, "saveData.txt");
+        
+        if (File.Exists(filePath))
         {
-            string encryptedData = File.ReadAllText("saveData.txt");
+            string encryptedData = File.ReadAllText(filePath);
             string json = Decrypt(encryptedData);
             GameData gameData = JsonUtility.FromJson<GameData>(json);
             level = gameData.levelData;
@@ -147,7 +154,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void CheckSaveData(){
-        if(File.Exists("saveData.txt")){
+        string filePath = Path.Combine(Application.persistentDataPath, "saveData.txt");
+        if(File.Exists(filePath)){
             countinueBtnShow?.Invoke(this, EventArgs.Empty);
         }
     }
